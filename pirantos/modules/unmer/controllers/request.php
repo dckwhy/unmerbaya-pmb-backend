@@ -30,6 +30,9 @@ class request extends MX_Controller {
 		// $data = $this->input->post();
 		$insert = $this->db->insert('data_user', $data);
 		if ($insert) {
+			$this->db->where('username', $username);
+			$hasil = $this->db->get('data_user')->row();
+			$feedback_msg['data_user'] = $hasil;
 			$feedback_msg['auth_message'] = 'success';
 		} else {
 			$feedback_msg['auth_message'] = 'fail';
@@ -180,7 +183,7 @@ class request extends MX_Controller {
 			$feedback_msg['auth_message'] = 'fail';
 		}
 		echo json_encode($feedback_msg);
-	}}
+	}
 
 	public function input_personal_data(){
 		$data = $this->input->post();
