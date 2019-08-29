@@ -169,14 +169,11 @@ class request extends MX_Controller {
 			'img_ijazah' => $foto_file4,
 			'photo' => $foto_file5,
 		);
+	 	$insert_personal = $this->db->insert('unmer_calon_mahasiswa.personal_data', $personal_data);
+		$insert_detail = $this->db->insert('unmer_calon_mahasiswa.personal_data_details', $detail_personal_data);
 
-		if ($personal_data) {
-			$this->db->insert('unmer_calon_mahasiswa.personal_data', $personal_data);
-			// $this->db->insert('unmer_calon_mahasiswa.personal_data_details', $detail_personal_data);
-			$feedback_msg['auth_message'] = 'success';
-		}
-		else if($detail_personal_data){
-			$this->db->insert('unmer_calon_mahasiswa.personal_data_details', $detail_personal_data);
+
+		if ($insert_personal && $insert_detail) {
 			$feedback_msg['auth_message'] = 'success';
 		}
 		else {
