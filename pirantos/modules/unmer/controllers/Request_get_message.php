@@ -30,6 +30,22 @@ class Request_get_message extends MX_Controller {
 			}
 		}
 		echo json_encode($message);
+    }
+    
+    public function update_message_admin(){
+		$data = $this->input->post('id');
+
+		$status['status'] = 0;
+		$this->db->where('mahasiswa_id', $data);
+		$this->db->where('sender', 'admin');
+		$update = $this->db->update('data_message', $status);
+
+		if ($update) {
+			$feedback['msg'] = 'success';
+		}else{
+			$feedback['msg'] = 'fail';
+		}
+		echo json_encode($feedback);
 	}
 	
 }
