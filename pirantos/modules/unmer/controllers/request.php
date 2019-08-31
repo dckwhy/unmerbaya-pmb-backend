@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class request extends MX_Controller {
+class Request extends MX_Controller {
 
 
 	public function __construct()
@@ -27,15 +27,20 @@ class request extends MX_Controller {
 			'username' => $username,
 			'pass' => $pass,
 		);
-		// $data = $this->input->post();
-		$insert = $this->db->insert('data_user', $data);
-		if ($insert) {
-			$this->db->where('username', $username);
-			$hasil = $this->db->get('data_user')->row();
-			$feedback_msg['data_user'] = $hasil;
-			$feedback_msg['auth_message'] = 'success';
-		} else {
-			$feedback_msg['auth_message'] = 'fail';
+		$this->db->where('username', $username);
+		$check_uname = $this->db->get('data_user')->result();
+		if (count($check_uname) > 0) {
+			$feedback_msg['auth_message'] = 'username exist';
+		}else{
+			$insert = $this->db->insert('data_user', $data);
+			if ($insert) {
+				$this->db->where('username', $username);
+				$hasil = $this->db->get('data_user')->row();
+				$feedback_msg['data_user'] = $hasil;
+				$feedback_msg['auth_message'] = 'success';
+			} else {
+				$feedback_msg['auth_message'] = 'fail';
+			}
 		}
 		echo json_encode($feedback_msg);
 	}
@@ -63,6 +68,7 @@ class request extends MX_Controller {
 		$date = date('Y');
 
 		// personal data
+		$user_id = $this->input->post('user_id');
 		$name = $this->input->post('name');
 		$gender = $this->input->post('gender');
 		$tgl_lahir = $this->input->post('tgl_lahir');
@@ -76,7 +82,7 @@ class request extends MX_Controller {
 		$nik = $this->input->post('nik');
 		$nisn = $this->input->post('nisn');
 
-		$address_all = array($alamat, ',',  $desa, ',', $kecamatan, ',', $kota);
+		$address_all = array($alamat," " ,$desa, " ", $kecamatan," ", $kota);
 		$address = implode($address_all);
 		unset($alamat);
 		unset($desa);
@@ -96,16 +102,20 @@ class request extends MX_Controller {
 
 		//data-pendukung
 		$sumber_informasi = $this->input->post('sumber_informasi');		
-		$foto_file = $this->input->post('img_ktp');		
-		$foto_file2 = $this->input->post('img_kk');		
-		$foto_file3 = $this->input->post('img_nisn');		
-		$foto_file4 = $this->input->post('img_ijazah');		
-		$foto_file5 = $this->input->post('photo');		
+		$foto_file = $this->input->post('foto_file');		
+		$foto_file2 = $this->input->post('foto_file2');		
+		$foto_file3 = $this->input->post('foto_file3');		
+		$foto_file4 = $this->input->post('foto_file4');		
+		$foto_file5 = $this->input->post('foto_file5');		
 
-		// if(move_uploaded_file($_FILES['foto_file']['tmp_name'],'./prabotan/image/ktp/'.'ktp'.$date.'.'.pathinfo($_FILES['foto_file']['name'], PATHINFO_EXTENSION))){ 
-		// 	$file  = 'ktp'.$date.'.'.pathinfo($_FILES['foto_file']['name'], PATHINFO_EXTENSION); 
-		// }
-		// $foto_file_ktp = $file;
+		if(move_uploaded_file(
+			$foto_file['tmp_name'],
+			'./prabotan/image/ktp/'.'ktp'.$date.'.'.pathinfo($foto_file['name'], PATHINFO_EXTENSION)
+			))
+		{
+			$file = 'ktp'.$date.'.'.pathinfo($foto_file['name'], PATHINFO_EXTENSION); 
+			$detail_personal_data['img_ktp'] = $file;
+		}
 
 		// unset($foto_file);
 
@@ -142,6 +152,7 @@ class request extends MX_Controller {
 	// 	unset($detail_personal_data['foto_file_5']);
 
 		$personal_data = array(
+			'user_id' => $user_id,
 			'name' => $name,
 			'gender' => $gender,
 			'tgl_lahir' => $tgl_lahir,
@@ -152,23 +163,30 @@ class request extends MX_Controller {
 			'nik' => $nik,
 			'nisn' => $nisn,
 		);
-
-		$detail_personal_data = array(
-			'sekolah_asal' => $sekolah_asal,
-			'alamat_sekolah_asal' => $alamat_sekolah_asal,
-			'nama_kantor' => $nama_kantor,
-			'alamat_kantor' => $alamat_kantor,
-			'prodi' => $prodi,
-			'waktu' => $waktu,
-			'gelombang' => $gelombang,
-			'sumber_informasi' => $sumber_informasi,
-			'img_ktp' => $foto_file,
-			// 'img_ktp' => $foto_file,
-			'img_kk' => $foto_file2,
-			'img_nisn' => $foto_file3,
-			'img_ijazah' => $foto_file4,
-			'photo' => $foto_file5,
-		);
+		$detail_personal_data['sekolah_asal'] = $sekolah_asal;
+		$detail_personal_data['alamat_sekolah_asal'] = $alamat_sekolah_asal;
+		$detail_personal_data['nama_kantor'] = $nama_kantor;
+		$detail_personal_data['alamat_kantor'] = $alamat_kantor;
+		$detail_personal_data['prodi'] = $prodi;
+		$detail_personal_data['waktu'] = $waktu;
+		$detail_personal_data['gelombang'] = $gelombang;
+		$detail_personal_data['sumber_informasi'] = $sumber_informasi;
+		// $detail_personal_data = array(
+		// 	'sekolah_asal' => $sekolah_asal,
+		// 	'alamat_sekolah_asal' => $alamat_sekolah_asal,
+		// 	'nama_kantor' => $nama_kantor,
+		// 	'alamat_kantor' => $alamat_kantor,
+		// 	'prodi' => $prodi,
+		// 	'waktu' => $waktu,
+		// 	'gelombang' => $gelombang,
+		// 	'sumber_informasi' => $sumber_informasi,
+		// 	//'img_ktp' => $ktp,
+		// 	// 'img_ktp' => $foto_file,
+		// 	//'img_kk' => $foto_file2,
+		// 	//'img_nisn' => $foto_file3,
+		// 	//'img_ijazah' => $foto_file4,
+		// 	//'photo' => $foto_file5,
+		// );
 	 	$insert_personal = $this->db->insert('unmer_calon_mahasiswa.personal_data', $personal_data);
 		$insert_detail = $this->db->insert('unmer_calon_mahasiswa.personal_data_details', $detail_personal_data);
 
