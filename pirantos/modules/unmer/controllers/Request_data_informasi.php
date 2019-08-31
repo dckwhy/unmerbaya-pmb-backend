@@ -15,6 +15,7 @@ class Request_data_informasi extends MX_Controller {
             $value->tgl = date('d M Y', strtotime($value->tanggal_publish));
             $value->content = limit_text($value->content, 15);
             $value->jumlah = count($jumlah_like);
+            $value->img = base_url('prabotan/image/information/'.$value->img);
 
             $this->db->where('post_id', $value->id);
             $this->db->where('user_id', $user_id);
@@ -40,6 +41,7 @@ class Request_data_informasi extends MX_Controller {
             $value->tgl = date('d M Y', strtotime($value->tanggal_publish));
             $value->content = limit_text($value->content, 15);
             $value->jumlah = count($jumlah_like);
+            $value->img = base_url('prabotan/image/information/'.$value->img);
 
             $this->db->where('post_id', $value->id);
             $this->db->where('user_id', $user_id);
@@ -64,6 +66,7 @@ class Request_data_informasi extends MX_Controller {
             $value->tgl = date('d M Y', strtotime($value->tanggal_publish));
             $value->content = limit_text($value->content, 15);
             $value->jumlah = count($jumlah_like);
+            $value->img = base_url('prabotan/image/information/'.$value->img);
 
             $this->db->where('post_id', $value->id);
             $this->db->where('user_id', $user_id);

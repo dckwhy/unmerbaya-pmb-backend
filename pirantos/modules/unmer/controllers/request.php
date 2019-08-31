@@ -68,13 +68,7 @@ class Request extends MX_Controller {
 		$date = date('Ymhs');
 
 		// personal data
-		$data = $this->input->post();
-		$address_all = array($data['alamat']," " ,$data['desa'], " ", $data['kecamatan']," ", $data['kota']);
-		$data['address'] = implode($address_all);
-		unset($data['alamat']);
-		unset($data['desa']);
-		unset($data['kecamatan']);
-		unset($data['kota']);		
+		$data = $this->input->post();		
 
 		if(move_uploaded_file($_FILES['foto_file']['tmp_name'],'./prabotan/image/ktp/'.'ktp'.$date.'.'.pathinfo($_FILES['foto_file']['name'], PATHINFO_EXTENSION)
 			))

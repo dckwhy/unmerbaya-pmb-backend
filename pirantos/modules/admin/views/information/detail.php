@@ -72,13 +72,6 @@
 
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <div class="form-group">
-                                                        <label>Apreciate</label>
-                                                        <input type="text" class="form-control" value="<?= $row->apreciate ?>" required name="apreciate" disabled>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <div class="form-group">
                                                         <label>Reader</label>
                                                         <input type="text" class="form-control" value="<?= $row->reader ?>" required name="reader" disabled>
                                                     </div>

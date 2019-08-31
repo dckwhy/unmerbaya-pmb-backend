@@ -34,7 +34,7 @@
                                             <table id="zero-configuration" class="display table nowrap table-striped table-hover" style="width:100%">
                                                 <thead>
                                                     <tr>
-                                                        <th>Image</th>
+                                                        <th>Judul</th>
                                                         <th>Content</th>
                                                         <th>Action</th>
                                                     </tr>
@@ -46,7 +46,7 @@
                                                     $get_user = $this->db->get('data_informasi')->result();
                                                     foreach ($get_user as $value) { ?>
                                                     <tr>
-                                                        <td><?= $value->img ?></td>
+                                                        <td><?= $value->judul ?></td>
                                                         <td><?= text_limit($value->content, 5) ?></td>
                                                         <td>
                                                             <?= get_detail_edit_delete_js($value->id) ?>
