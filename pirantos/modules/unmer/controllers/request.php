@@ -65,133 +65,54 @@ class Request extends MX_Controller {
 	}
 
 	public function input_data_pendaftaran(){
-		$date = date('Y');
+		$date = date('Ymhs');
 
 		// personal data
-		$user_id = $this->input->post('user_id');
-		$name = $this->input->post('name');
-		$gender = $this->input->post('gender');
-		$tgl_lahir = $this->input->post('tgl_lahir');
-		$tempat_lahir = $this->input->post('tempat_lahir');
-		$agama = $this->input->post('agama');
-		$kota = $this->input->post('kota');
-		$kecamatan = $this->input->post('kecamatan');
-		$desa = $this->input->post('desa');
-		$alamat = $this->input->post('alamat');
-		$phone = $this->input->post('phone');
-		$nik = $this->input->post('nik');
-		$nisn = $this->input->post('nisn');
+		$data = $this->input->post();
+		$address_all = array($data['alamat']," " ,$data['desa'], " ", $data['kecamatan']," ", $data['kota']);
+		$data['address'] = implode($address_all);
+		unset($data['alamat']);
+		unset($data['desa']);
+		unset($data['kecamatan']);
+		unset($data['kota']);		
 
-		$address_all = array($alamat," " ,$desa, " ", $kecamatan," ", $kota);
-		$address = implode($address_all);
-		unset($alamat);
-		unset($desa);
-		unset($kecamatan);
-		unset($kota);
-
-		// detail personal
-		$sekolah_asal = $this->input->post('sekolah_asal');
-		$alamat_sekolah_asal = $this->input->post('alamat_sekolah_asal');
-		$nama_kantor = $this->input->post('nama_kantor');
-		$alamat_kantor = $this->input->post('alamat_kantor');	
-
-		//poi
-		$prodi = $this->input->post('prodi');		
-		$waktu = $this->input->post('waktu');		
-		$gelombang = $this->input->post('gelombang');		
-
-		//data-pendukung
-		$sumber_informasi = $this->input->post('sumber_informasi');		
-		$foto_file = $this->input->post('foto_file');		
-		$foto_file2 = $this->input->post('foto_file2');		
-		$foto_file3 = $this->input->post('foto_file3');		
-		$foto_file4 = $this->input->post('foto_file4');		
-		$foto_file5 = $this->input->post('foto_file5');		
-
-		if(move_uploaded_file(
-			$foto_file['tmp_name'],
-			'./prabotan/image/ktp/'.'ktp'.$date.'.'.pathinfo($foto_file['name'], PATHINFO_EXTENSION)
+		if(move_uploaded_file($_FILES['foto_file']['tmp_name'],'./prabotan/image/ktp/'.'ktp'.$date.'.'.pathinfo($_FILES['foto_file']['name'], PATHINFO_EXTENSION)
 			))
-		{
-			$file = 'ktp'.$date.'.'.pathinfo($foto_file['name'], PATHINFO_EXTENSION); 
-			$detail_personal_data['img_ktp'] = $file;
+		{ 
+			$file = 'ktp'.$date.'.'.pathinfo($_FILES['foto_file']['name'], PATHINFO_EXTENSION);
+			$data['img_ktp'] = $file;
 		}
 
-		// unset($foto_file);
+		if(move_uploaded_file($_FILES['foto_file2']['tmp_name'],'./prabotan/image/kk/'.'kk'.$date.'.'.pathinfo($_FILES['foto_file2']['name'], PATHINFO_EXTENSION)
+			))
+		{ 
+			$file = 'kk'.$date.'.'.pathinfo($_FILES['foto_file2']['name'], PATHINFO_EXTENSION);
+			$data['img_kk'] = $file;
+		}
 
-	// 	if(move_uploaded_file(
-	// 		$_FILES['foto_file_2']['tmp_name'],
-	// 		'./prabotan/image/kk/'.'kk'.$date.'.'.pathinfo($_FILES['foto_file_2']['name'], PATHINFO_EXTENSION)
-	// 		)){ $file  = 'kk'.$date.'.'.pathinfo($_FILES['foto_file_2']['name'], PATHINFO_EXTENSION); }
-	// 		$detail_personal_data['img_kk'] = $file;
+		if(move_uploaded_file($_FILES['foto_file3']['tmp_name'],'./prabotan/image/nisn/'.'nisn'.$date.'.'.pathinfo($_FILES['foto_file3']['name'], PATHINFO_EXTENSION)
+			))
+		{ 
+			$file = 'nisn'.$date.'.'.pathinfo($_FILES['foto_file3']['name'], PATHINFO_EXTENSION);
+			$data['img_nisn'] = $file;
+		}
+		if(move_uploaded_file($_FILES['foto_file4']['tmp_name'],'./prabotan/image/ijazah/'.'ijazah'.$date.'.'.pathinfo($_FILES['foto_file4']['name'], PATHINFO_EXTENSION)
+			))
+		{ 
+			$file = 'ijazah'.$date.'.'.pathinfo($_FILES['foto_file4']['name'], PATHINFO_EXTENSION);
+			$data['img_ijazah'] = $file;
+		}
 
-	// 	unset($detail_personal_data['foto_file_2']);
+		if(move_uploaded_file($_FILES['foto_file5']['tmp_name'],'./prabotan/image/foto/'.'foto'.$date.'.'.pathinfo($_FILES['foto_file5']['name'], PATHINFO_EXTENSION)
+			))
+		{ 
+			$file = 'foto'.$date.'.'.pathinfo($_FILES['foto_file5']['name'], PATHINFO_EXTENSION);
+			$data['photo'] = $file;
+		}
 
-	// 	if(move_uploaded_file(
-	// 		$_FILES['foto_file_3']['tmp_name'],
-	// 		'./prabotan/image/nisn/'.'nisn'.$date.'.'.pathinfo($_FILES['foto_file_3']['name'], PATHINFO_EXTENSION)
-	// 		)){ $file  = 'nisn'.$date.'.'.pathinfo($_FILES['foto_file_3']['name'], PATHINFO_EXTENSION); }
-	// 		$detail_personal_data['img_nisn'] = $file;
+	 	$insert_personal = $this->db->insert('unmer_calon_mahasiswa.personal_data', $data);
 
-	// 	unset($detail_personal_data['foto_file_3']);
-
-	// 	if(move_uploaded_file(
-	// 		$_FILES['foto_file_4']['tmp_name'],
-	// 		'./prabotan/image/ijazah/'.'ijazah'.$date.'.'.pathinfo($_FILES['foto_file_4']['name'], PATHINFO_EXTENSION)
-	// 		)){ $file  = 'ijazah'.$date.'.'.pathinfo($_FILES['foto_file_4']['name'], PATHINFO_EXTENSION); }
-	// 		$detail_personal_data['img_ijazah'] = $file;
-
-	// 	unset($detail_personal_data['foto_file_4']);
-
-	// 	if(move_uploaded_file(
-	// 		$_FILES['foto_file_5']['tmp_name'],
-	// 		'./prabotan/image/photo/'.'photo'.$date.'.'.pathinfo($_FILES['foto_file_5']['name'], PATHINFO_EXTENSION)
-	// 		)){ $file  = 'photo'.$date.'.'.pathinfo($_FILES['foto_file_5']['name'], PATHINFO_EXTENSION); }
-	// 		$detail_personal_data['photo'] = $file;
-
-	// 	unset($detail_personal_data['foto_file_5']);
-
-		$personal_data = array(
-			'user_id' => $user_id,
-			'name' => $name,
-			'gender' => $gender,
-			'tgl_lahir' => $tgl_lahir,
-			'tempat_lahir' => $tempat_lahir,
-			'agama' => $agama,
-			'address' => $address,
-			'phone' => $phone,
-			'nik' => $nik,
-			'nisn' => $nisn,
-		);
-		$detail_personal_data['sekolah_asal'] = $sekolah_asal;
-		$detail_personal_data['alamat_sekolah_asal'] = $alamat_sekolah_asal;
-		$detail_personal_data['nama_kantor'] = $nama_kantor;
-		$detail_personal_data['alamat_kantor'] = $alamat_kantor;
-		$detail_personal_data['prodi'] = $prodi;
-		$detail_personal_data['waktu'] = $waktu;
-		$detail_personal_data['gelombang'] = $gelombang;
-		$detail_personal_data['sumber_informasi'] = $sumber_informasi;
-		// $detail_personal_data = array(
-		// 	'sekolah_asal' => $sekolah_asal,
-		// 	'alamat_sekolah_asal' => $alamat_sekolah_asal,
-		// 	'nama_kantor' => $nama_kantor,
-		// 	'alamat_kantor' => $alamat_kantor,
-		// 	'prodi' => $prodi,
-		// 	'waktu' => $waktu,
-		// 	'gelombang' => $gelombang,
-		// 	'sumber_informasi' => $sumber_informasi,
-		// 	//'img_ktp' => $ktp,
-		// 	// 'img_ktp' => $foto_file,
-		// 	//'img_kk' => $foto_file2,
-		// 	//'img_nisn' => $foto_file3,
-		// 	//'img_ijazah' => $foto_file4,
-		// 	//'photo' => $foto_file5,
-		// );
-	 	$insert_personal = $this->db->insert('unmer_calon_mahasiswa.personal_data', $personal_data);
-		$insert_detail = $this->db->insert('unmer_calon_mahasiswa.personal_data_details', $detail_personal_data);
-
-
-		if ($insert_personal && $insert_detail) {
+		if ($insert_personal) {
 			$feedback_msg['auth_message'] = 'success';
 		}
 		else {

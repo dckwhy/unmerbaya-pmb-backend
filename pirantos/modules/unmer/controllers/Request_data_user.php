@@ -14,6 +14,7 @@ class Request_data_user extends MX_Controller {
             $feedback['msg'] = 'success';
         }else{
             $feedback['msg'] = 'fail';
+            $feedback['hasil'] = $get_user;
         }
         echo json_encode($feedback);
     }
