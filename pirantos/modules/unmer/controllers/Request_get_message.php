@@ -30,7 +30,19 @@ class Request_get_message extends MX_Controller {
 			}
 		}
 		echo json_encode($message);
-    }
+	}
+	
+	public function get_data_message(){
+		$data = $this->input->post('id');
+
+		$this->db->where('mahasiswa_id', $data);
+		$this->db->where('sender', 'admin');
+		$this->db->where('status', 1);
+		$get_message = $this->db->get('data_message')->result();
+		$count = count($get_message);
+		
+		echo json_encode($count);
+	}
     
     public function update_message_admin(){
 		$data = $this->input->post('id');

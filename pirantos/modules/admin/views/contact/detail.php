@@ -11,6 +11,7 @@
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/codemirror/2.36.0/formatting.js"></script>
 <link href="<?php echo base_url() ?>prabotan/admin/plugins/summernote/summernote.css" rel="stylesheet">
 <link href="<?= base_url() ?>prabotan/admin/css/chat.css" rel="stylesheet" type="text/css" />
+<link href="<?= base_url() ?>prabotan/admin/css/chat.css" rel="stylesheet" type="text/css" />
 
 <section class="pcoded-main-container">
     <div class="pcoded-wrapper">

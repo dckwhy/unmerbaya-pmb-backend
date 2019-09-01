@@ -58,6 +58,8 @@
                                                         <?php
                                                         if (count($get_status) > 0) { ?>
                                                             <div style="height:15px; width:15px; background-color:red; border-radius:50%"><span class="ml-4">New Message</span></div>
+                                                        <?php }else{ ?>
+                                                            Read
                                                         <?php } ?>
                                                         </td>
                                                         <td>
